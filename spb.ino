@@ -41,6 +41,20 @@ void loop() {
   int valuefor50 = analogRead(A2);
   int valuefor20 = analogRead(A3);
   int valuefor10 = analogRead(A4);
+
+  int value5 = analogRead(A8);
+  int value10 = analogRead(A9);
+  int value20 = analogRead(A10);
+  int value30 = analogRead(A11);
+  int value40 = analogRead(A12);
+
+  Serial.println(value5);
+  Serial.println(value10);
+  Serial.println(value20);
+  Serial.println(value30);
+  Serial.println(value40);
+
+  delay(5000);
   
   if(valuefor2 < 900)
   {
@@ -71,4 +85,23 @@ void loop() {
     Serial.println("10 st");
     delay(250); 
   }
+
+  int degree;
+  delay(1000);
+  
+  for (degree = 0; degree <= 70; degree += 1) 
+  { 
+    moneyservo.write(degree);           
+    delay(15);                       
+  }
+
+  delay(3000);
+  
+  for (degree = 70; degree >=-0; degree -= 1) 
+  {
+    moneyservo.write(degree);            
+    delay(25);                    
+  }
+
+  delay(1000);
 }
