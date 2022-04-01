@@ -39,7 +39,7 @@ void servoMoving()
   {
     countCoveredLDR++;
   }
-  if(paperMoneyValue50 < 850)
+  if(paperMoneyValue50 < 900)
   {
     countCoveredLDR++;
   }
@@ -76,7 +76,7 @@ void servoMoving()
   for (degree = 70; degree >=-0; degree -= 1) 
   {
     moneyServo.write(degree);            
-    delay(15);                    
+    delay(5);                    
   }
 
   delay(500);
@@ -180,50 +180,8 @@ void printMoney()
   }
 }
 
-void setup() {
-  moneyServo.attach(9);
-  moneyServo.write(70);
-
-  lcd.init();
-  lcd.backlight();
-  
-  Serial.begin(9600);
-  pinMode(led10, OUTPUT); 
-  pinMode(led20, OUTPUT); 
-  pinMode(led50, OUTPUT); 
-  pinMode(led1, OUTPUT); 
-  pinMode(led2, OUTPUT);
-  
-  digitalWrite(led10, HIGH);
-  digitalWrite(led20, HIGH);
-  digitalWrite(led50, HIGH); 
-  digitalWrite(led1, HIGH);
-  digitalWrite(led2, HIGH);
-
-  pinMode(servoButton, INPUT); 
-  pinMode(lcdButton, INPUT); 
-  pinMode(12, OUTPUT);
-   digitalWrite(12, HIGH);
-
-  lcd.setCursor(1, 0); 
-  lcd.print("Current money:"); 
-  lcd.setCursor(2, 1);
-  lcd.print(moneyInsert);
-  lcd.setCursor(9 , 1);
-  lcd.print(currency);
-  
-  delay(1000);
-}
-
-void loop() 
+void coinCounter()
 {
-  changeCurrency();
-  printMoney();
-  if(readPaperMoney() == 1)
-  {
-    servoMoving();
-  }
-
   int coinValueFor2 = analogRead(A0);
   int coinValueFor1 = analogRead(A1);
   int coinValueFor50 = analogRead(A2);
@@ -264,6 +222,52 @@ void loop()
     Serial.println("10 st");
     delay(250); 
   }
+}
 
-  //delay(1000);
+void setup() {
+  moneyServo.attach(9);
+  moneyServo.write(70);
+
+  lcd.init();
+  lcd.backlight();
+  
+  Serial.begin(9600);
+  pinMode(led10, OUTPUT); 
+  pinMode(led20, OUTPUT); 
+  pinMode(led50, OUTPUT); 
+  pinMode(led1, OUTPUT); 
+  pinMode(led2, OUTPUT);
+  
+  digitalWrite(led10, HIGH);
+  digitalWrite(led20, HIGH);
+  digitalWrite(led50, HIGH); 
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, HIGH);
+
+  pinMode(servoButton, INPUT); 
+  pinMode(lcdButton, INPUT); 
+  pinMode(12, OUTPUT);
+   digitalWrite(12, HIGH);
+
+  lcd.setCursor(1, 0); 
+  lcd.print("Current money:"); 
+  lcd.setCursor(2, 1);
+  lcd.print(moneyInsert);
+  lcd.setCursor(9 , 1);
+  lcd.print(currency);
+  
+  delay(1000);
+}
+
+void loop() 
+{
+  changeCurrency();
+  printMoney();
+  
+  if(readPaperMoney() == 1)
+  {
+    servoMoving();
+  }
+
+  coinCounter();
 }
