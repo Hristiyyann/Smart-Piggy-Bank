@@ -27,28 +27,30 @@ void servoMoving()
   int paperMoneyValue50 = analogRead(A9);
   int paperMoneyValue100 = analogRead(A8);
 
-  if(paperMoneyValue5 < 700)
+  if(paperMoneyValue5 < 830)
   {
     countCoveredLDR++;
   }
-  if(paperMoneyValue10 < 850)
+  if(paperMoneyValue10 < 900)
   {
     countCoveredLDR++;
   }
-  if(paperMoneyValue20 < 700)
+  if(paperMoneyValue20 < 850)
   {
     countCoveredLDR++;
   }
-  if(paperMoneyValue50 < 800)
+  if(paperMoneyValue50 < 850)
   {
     countCoveredLDR++;
   }
-  if(paperMoneyValue100 < 780)
+  if(paperMoneyValue100 < 800)
   {
     countCoveredLDR++;
   }
-   Serial.println("total");
+  
+  Serial.println("total");
   Serial.println(countCoveredLDR);
+  
   switch(countCoveredLDR)
   {
     case 1: moneyInsert += 5; break;
@@ -189,6 +191,8 @@ void setup() {
 
   pinMode(servoButton, INPUT); 
   pinMode(lcdButton, INPUT); 
+  pinMode(12, OUTPUT);
+   digitalWrite(12, HIGH);
 
   lcd.setCursor(1, 0); 
   lcd.print("Current money:"); 
@@ -215,17 +219,19 @@ void loop()
   int coincoinValueFor20 = analogRead(A3);
   int coinValueFor10 = analogRead(A4);
 
-  if(coinValueFor2 < 900)
+  if(coinValueFor2 < 890)
   {
     moneyInsert += 2.0;
     Serial.println("2 leva");
+    Serial.println(coinValueFor2);
     delay(250); 
   }
   
-  else if(coinValueFor1 < 890)
+  else if(coinValueFor1 < 880)
   {
     moneyInsert += 1.0; 
     Serial.println("1 leva");
+    Serial.println(coinValueFor1);
     delay(250); 
   }
   
