@@ -103,7 +103,7 @@ int readPaperMoney()
 
 void changeCurrency()
 {
-  String currencies[] = {"leva", "euro", "pounds"};
+  String currencies[] = {"leva", "euro", "dollars", "pounds"};
   static int presses = 1;
   lastButtonLcdState = buttonLcdState;
   buttonLcdState = digitalRead(lcdButton);
@@ -117,7 +117,7 @@ void changeCurrency()
        lcd.print(" ");
     }
     
-    if(presses == 3)
+    if(presses == 4)
     {
       presses = 0;
       currency = currencies[presses];
@@ -129,6 +129,11 @@ void changeCurrency()
     }
 
     else if(presses == 2)
+    {
+       currency = currencies[presses];
+    }
+    
+    else if(presses == 3)
     {
        currency = currencies[presses];
     }
@@ -163,6 +168,12 @@ void printMoney()
   {
     lcd.print(moneyInsert * 0.51);
   }
+
+  else if(currency == "dollars")
+  {
+    lcd.print(moneyInsert * 0.56);
+  }
+  
   else
   {
      lcd.print(moneyInsert * 0.43);
@@ -223,7 +234,6 @@ void loop()
   {
     moneyInsert += 2.0;
     Serial.println("2 leva");
-    Serial.println(coinValueFor2);
     delay(250); 
   }
   
@@ -231,7 +241,6 @@ void loop()
   {
     moneyInsert += 1.0; 
     Serial.println("1 leva");
-    Serial.println(coinValueFor1);
     delay(250); 
   }
   
