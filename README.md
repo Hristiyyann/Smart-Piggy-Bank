@@ -17,8 +17,6 @@
 * **Християн Радев**  - *изработил изцяло проекта - https://github.com/Hristiyyann*
 
 ## Снимки
-![front_side](files/photo1.jpg)
-![side_photo](files/photo2.jpg)
 
 ### Рампата за отчитането на стотинки
 ![photo](files/photo3.jpg)
