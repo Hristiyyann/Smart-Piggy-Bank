@@ -15,8 +15,89 @@ float moneyInsert = 0;
 String currency = "leva";
 int buttonLcdState = 1, buttonMoneyState = 1;
 int lastButtonLcdState = 1, lastButtonMoneyState = 1;
-//Servo moneyServo; 
+Servo moneyServo; 
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 2); 
+
+void servoMoving()
+{
+  int countCoveredLDR = 0;
+  int paperMoneyValue5 = analogRead(A12);
+  int paperMoneyValue10 = analogRead(A11);
+  int paperMoneyValue20 = analogRead(A10);
+  int paperMoneyValue50 = analogRead(A9);
+  int paperMoneyValue100 = analogRead(A8);
+
+  if(paperMoneyValue5 < 700)
+  {
+    countCoveredLDR++;
+  }
+  if(paperMoneyValue10 < 850)
+  {
+    countCoveredLDR++;
+  }
+  if(paperMoneyValue20 < 700)
+  {
+    countCoveredLDR++;
+  }
+  if(paperMoneyValue50 < 800)
+  {
+    countCoveredLDR++;
+  }
+  if(paperMoneyValue100 < 780)
+  {
+    countCoveredLDR++;
+  }
+   Serial.println("total");
+  Serial.println(countCoveredLDR);
+  switch(countCoveredLDR)
+  {
+    case 1: moneyInsert += 5; break;
+    case 2: moneyInsert += 10; break;
+    case 3: moneyInsert += 20; break;
+    case 4: moneyInsert += 50; break;
+    case 5: moneyInsert += 100; break;
+  }
+
+  Serial.println("money");
+  Serial.println(moneyInsert);
+  
+  Serial.println(paperMoneyValue5);
+  Serial.println(paperMoneyValue10);
+  Serial.println(paperMoneyValue20);
+  Serial.println(paperMoneyValue50);
+  Serial.println(paperMoneyValue100);
+  Serial.println();
+  
+  int degree;
+  delay(1000);
+
+  for (degree = 70; degree >=-0; degree -= 1) 
+  {
+    moneyServo.write(degree);            
+    delay(15);                    
+  }
+
+  delay(500);
+  
+  for (degree = 0; degree <= 70; degree += 1) 
+  { 
+     moneyServo.write(degree);           
+     delay(15);                       
+  }
+}
+
+int readPaperMoney()
+{
+  lastButtonMoneyState = buttonMoneyState;
+  buttonMoneyState = digitalRead(servoButton);
+
+  if(lastButtonMoneyState != buttonMoneyState && buttonMoneyState == LOW)
+  {
+      return 1;
+  }
+
+  return 0;
+}
 
 void changeCurrency()
 {
@@ -87,8 +168,8 @@ void printMoney()
 }
 
 void setup() {
-  //moneyServo.attach(9);
-  //moneyServo.write(70);
+  moneyServo.attach(9);
+  moneyServo.write(70);
 
   lcd.init();
   lcd.backlight();
@@ -121,28 +202,18 @@ void setup() {
 
 void loop() 
 {
-  changeCurrency()
+  changeCurrency();
   printMoney();
+  if(readPaperMoney() == 1)
+  {
+    servoMoving();
+  }
 
   int coinValueFor2 = analogRead(A0);
   int coinValueFor1 = analogRead(A1);
   int coinValueFor50 = analogRead(A2);
   int coincoinValueFor20 = analogRead(A3);
   int coinValueFor10 = analogRead(A4);
-
-  
-  int paperMoneyValue5 = analogRead(A8);
-  int paperMoneyValue10 = analogRead(A9);
-  int paperMoneyValue20 = analogRead(A10);
-  int paperMoneyValue50 = analogRead(A11);
-  int paperMoneyValue100 = analogRead(A12);
-
-  /*Serial.println(paperMoneyValue5);
-  Serial.println(paperMoneyValue10);
-  Serial.println(paperMoneyValue20);
-  Serial.println(paperMoneyValue50);
-  Serial.println(paperMoneyValue100);
-  Serial.println();*/
 
   if(coinValueFor2 < 900)
   {
@@ -178,24 +249,6 @@ void loop()
     Serial.println("10 st");
     delay(250); 
   }
-
-  
-  int degree;
-  //delay(1000);
-  
- /* for (degree = 0; degree <= 70; degree += 1) 
-  { 
-    moneyServo.write(degree);           
-    delay(15);                       
-  }
-
-  delay(3000);
-  
-  for (degree = 70; degree >=-0; degree -= 1) 
-  {
-    moneyServo.write(degree);            
-    delay(15);                    
-  }*/
 
   //delay(1000);
 }
